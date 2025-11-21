@@ -1,0 +1,3 @@
+PANDUAN EXERCISE
+1. import dua database yang ada secara berurutan menggunakan command SOURCE.
+2. file pertama yang diimport adalah sakila-schema.sql lalu sakila-data.sql

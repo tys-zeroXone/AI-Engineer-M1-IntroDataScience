@@ -1,0 +1,125 @@
+-- NOMOR 6
+mysql> SELECT f.title AS judul, f.length AS durasi, l.name AS bahasa_film FROM film f INNER JOIN language l ON f.language_id = l.language_id WHERE f.title LIKE "%K" LIMIT 15;
++-------------------+--------+-------------+
+| judul             | durasi | bahasa_film |
++-------------------+--------+-------------+
+| AIRPORT POLLOCK   |     54 | English     |
+| BEAST HUNCHBACK   |     89 | English     |
+| BULL SHAWSHANK    |    125 | English     |
+| CANYON STOCK      |     85 | English     |
+| CHILL LUCK        |    142 | English     |
+| CHITTY LOCK       |    107 | English     |
+| CHOCOLATE DUCK    |    132 | English     |
+| CITIZEN SHREK     |    165 | English     |
+| CROWDS TELEMARK   |    112 | English     |
+| DAZED PUNK        |    120 | English     |
+| DESTINATION JERK  |     76 | English     |
+| FANTASIA PARK     |    131 | English     |
+| FLYING HOOK       |     69 | English     |
+| GRIT CLOCKWORK    |    137 | English     |
+| HANDICAP BOONDOCK |    108 | English     |
++-------------------+--------+-------------+
+15 rows in set (0.01 sec)
+
+-- NOMOR 7
+mysql> SELECT f.title AS judul_film, a.first_name, a.last_name FROM film AS f JOIN film_actor AS fa ON fa.film_id = f.film_id JOIN actor AS a ON a.actor_id = fa.actor_id WHERE a.actor_id = 14 ORDER BY f.title;
++----------------------+------------+-----------+
+| judul_film           | first_name | last_name |
++----------------------+------------+-----------+
+| CLASH FREDDY         | VIVIEN     | BERGEN    |
+| CRANES RESERVOIR     | VIVIEN     | BERGEN    |
+| DIRTY ACE            | VIVIEN     | BERGEN    |
+| DONNIE ALLEY         | VIVIEN     | BERGEN    |
+| DRIFTER COMMANDMENTS | VIVIEN     | BERGEN    |
+| DRIVING POLISH       | VIVIEN     | BERGEN    |
+| DRUMS DYNAMITE       | VIVIEN     | BERGEN    |
+| ENEMY ODDS           | VIVIEN     | BERGEN    |
+| EXCITEMENT EVE       | VIVIEN     | BERGEN    |
+| GORGEOUS BINGO       | VIVIEN     | BERGEN    |
+| HIGH ENCINO          | VIVIEN     | BERGEN    |
+| HILLS NEIGHBORS      | VIVIEN     | BERGEN    |
+| HOBBIT ALIEN         | VIVIEN     | BERGEN    |
+| IMPACT ALADDIN       | VIVIEN     | BERGEN    |
+| ITALIAN AFRICAN      | VIVIEN     | BERGEN    |
+| JAPANESE RUN         | VIVIEN     | BERGEN    |
+| KENTUCKIAN GIANT     | VIVIEN     | BERGEN    |
+| LOVELY JINGLE        | VIVIEN     | BERGEN    |
+| LOVER TRUMAN         | VIVIEN     | BERGEN    |
+| MUSSOLINI SPOILERS   | VIVIEN     | BERGEN    |
+| POLISH BROOKLYN      | VIVIEN     | BERGEN    |
+| SALUTE APOLLO        | VIVIEN     | BERGEN    |
+| SATURDAY LAMBS       | VIVIEN     | BERGEN    |
+| STOCK GLASS          | VIVIEN     | BERGEN    |
+| STREETCAR INTENTIONS | VIVIEN     | BERGEN    |
+| TIGHTS DAWN          | VIVIEN     | BERGEN    |
+| TRAP GUYS            | VIVIEN     | BERGEN    |
+| TYCOON GATHERING     | VIVIEN     | BERGEN    |
+| VOICE PEACH          | VIVIEN     | BERGEN    |
+| WESTWARD SEABISCUIT  | VIVIEN     | BERGEN    |
++----------------------+------------+-----------+
+30 rows in set (0.00 sec)
+
+--NOMOR 8
+mysql> SELECT city, country_id FROM city WHERE city LIKE '%d%a' ORDER BY city ASC LIMIT 15;
++-----------------------+------------+
+| city                  | country_id |
++-----------------------+------------+
+| Adana                 |         97 |
+| Addis Abeba           |         31 |
+| Alessandria           |         49 |
+| Alvorada              |         15 |
+| Aparecida de Goiânia  |         15 |
+| Avellaneda            |          6 |
+| Bamenda               |         19 |
+| Córdoba               |          6 |
+| Dhaka                 |         12 |
+| Guadalajara           |         60 |
+| Haldia                |         44 |
+| Hodeida               |        107 |
+| Jedda                 |         82 |
+| Juiz de Fora          |         15 |
+| Kaduna                |         69 |
++-----------------------+------------+
+15 rows in set (0.00 sec)
+
+--NOMOR 9
+mysql> SELECT c.name AS genre, COUNT(f.film_id) AS banyak_film FROM category AS c LEFT JOIN film_category AS fc ON fc.category_id = c.category_id LEFT JOIN film AS f ON f.film_id = fc.film_id GROUP BY c.category_id, c.name ORDER BY banyak_film ASC, c.name;
++-------------+-------------+
+| genre       | banyak_film |
++-------------+-------------+
+| Music       |          51 |
+| Horror      |          56 |
+| Classics    |          57 |
+| Travel      |          57 |
+| Comedy      |          58 |
+| Children    |          60 |
+| Games       |          61 |
+| Sci-Fi      |          61 |
+| Drama       |          62 |
+| New         |          63 |
+| Action      |          64 |
+| Animation   |          66 |
+| Documentary |          68 |
+| Family      |          69 |
+| Foreign     |          73 |
+| Sports      |          74 |
++-------------+-------------+
+16 rows in set (0.00 sec)
+
+--NOMOR 10
+mysql> SELECT title, description, length, rating FROM film WHERE title LIKE '%h' AND length > (SELECT AVG(length) FROM film) ORDER BY title ASC LIMIT 10;
++---------------------+-----------------------------------------------------------------------------------------------------------------+--------+--------+
+| title               | description                                                                                                     | length | rating |
++---------------------+-----------------------------------------------------------------------------------------------------------------+--------+--------+
+| CHICAGO NORTH       | A Fateful Yarn of a Mad Cow And a Waitress who must Battle a Student in California                              |    185 | PG-13  |
+| DADDY PITTSBURGH    | A Epic Story of a A Shark And a Student who must Confront a Explorer in The Gulf of Mexico                      |    161 | G      |
+| DOUBLE WRATH        | A Thoughtful Yarn of a Womanizer And a Dog who must Challenge a Madman in The Gulf of Mexico                    |    177 | R      |
+| DOUBTFIRE LABYRINTH | A Intrepid Panorama of a Butler And a Composer who must Meet a Mad Cow in The Sahara Desert                     |    154 | R      |
+| DRIVING POLISH      | A Action-Packed Yarn of a Feminist And a Technical Writer who must Sink a Boat in An Abandoned Mine Shaft       |    175 | NC-17  |
+| EMPIRE MALKOVICH    | A Amazing Story of a Feminist And a Cat who must Face a Car in An Abandoned Fun House                           |    177 | G      |
+| GREASE YOUTH        | A Emotional Panorama of a Secret Agent And a Waitress who must Escape a Composer in Soviet Georgia              |    135 | G      |
+| HAROLD FRENCH       | A Stunning Saga of a Sumo Wrestler And a Student who must Outrace a Moose in The Sahara Desert                  |    168 | NC-17  |
+| HOMICIDE PEACH      | A Astounding Documentary of a Hunter And a Boy who must Confront a Boy in A MySQL Convention                    |    141 | PG-13  |
+| JADE BUNCH          | A Insightful Panorama of a Squirrel And a Mad Cow who must Confront a Student in The First Manned Space Station |    174 | NC-17  |
++---------------------+-----------------------------------------------------------------------------------------------------------------+--------+--------+
+10 rows in set (0.00 sec)

@@ -1,0 +1,1202 @@
+(base) arifagustyawan@nomadicts-mac-mini d8 % mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.4.7 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SOURCE /Users/arifagustyawan/Documents/pwd/d8/world.sql 
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| classicmodels      |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| seller             |
+| shop               |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> USE world;
+Database changed
+mysql> SHOW TABLES;
++-----------------+
+| Tables_in_world |
++-----------------+
+| city            |
+| country         |
+| countrylanguage |
++-----------------+
+3 rows in set (0.01 sec)
+
+mysql> SELECT * FROM city WHERE DISTRICT LIKE 'Y%' LIMIT 5;
++------+-------------+-------------+------------+------------+
+| ID   | Name        | CountryCode | District   | Population |
++------+-------------+-------------+------------+------------+
+|  126 | Yerevan     | ARM         | Yerevan    |    1248700 |
+|  955 | Yogyakarta  | IDN         | Yogyakarta |     418944 |
+| 1001 | Depok       | IDN         | Yogyakarta |     106800 |
+| 1396 | Yazd        | IRN         | Yazd       |     326776 |
+| 1614 | Shimonoseki | JPN         | Yamaguchi  |     257263 |
++------+-------------+-------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city WHERE District LIKE 'Kalimantan%' LIMIT 10;
++------+---------------+-------------+--------------------+------------+
+| ID   | Name          | CountryCode | District           | Population |
++------+---------------+-------------+--------------------+------------+
+|  952 | Banjarmasin   | IDN         | Kalimantan Selatan |     482931 |
+|  956 | Pontianak     | IDN         | Kalimantan Barat   |     409632 |
+|  957 | Samarinda     | IDN         | Kalimantan Timur   |     399175 |
+|  961 | Balikpapan    | IDN         | Kalimantan Timur   |     338752 |
+| 1007 | Palangka Raya | IDN         | Kalimantan Tengah  |      99693 |
++------+---------------+-------------+--------------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city WHERE District = 'Kalimantan' LIMIT 10;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM city WHERE District LIKE '%X' LIMIT 5;
++------+------+-------------+----------+------------+
+| ID   | Name | CountryCode | District | Population |
++------+------+-------------+----------+------------+
+| 3350 | Sfax | TUN         | Sfax     |     257800 |
++------+------+-------------+----------+------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT * FROM city WHERE District LIKE '%Tengah' LIMIT 5;
++------+---------------+-------------+-------------------+------------+
+| ID   | Name          | CountryCode | District          | Population |
++------+---------------+-------------+-------------------+------------+
+|  983 | Palu          | IDN         | Sulawesi Tengah   |     142800 |
+| 1007 | Palangka Raya | IDN         | Kalimantan Tengah |      99693 |
++------+---------------+-------------+-------------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city WHERE District LIKE 'Y%a';
++------+---------------+-------------+------------------+------------+
+| ID   | Name          | CountryCode | District         | Population |
++------+---------------+-------------+------------------+------------+
+|  955 | Yogyakarta    | IDN         | Yogyakarta       |     418944 |
+| 1001 | Depok         | IDN         | Yogyakarta       |     106800 |
+| 1615 | Yamagata      | JPN         | Yamagata         |     255617 |
+| 1752 | Sakata        | JPN         | Yamagata         |     101651 |
+| 1755 | Tsuruoka      | JPN         | Yamagata         |     100713 |
+| 1765 | Yonezawa      | JPN         | Yamagata         |      95592 |
+| 3753 | Nojabrsk      | RUS         | Yamalin Nenetsia |      97300 |
+| 3768 | Novyi Urengoi | RUS         | Yamalin Nenetsia |      89800 |
++------+---------------+-------------+------------------+------------+
+8 rows in set (0.01 sec)
+
+mysql> SELECT Name, Population FROM city WHERE Population BETWEEN 1000000 AND 2000000 LIMIT 5;
++------------+------------+
+| Name       | Population |
++------------+------------+
+| Kabul      |    1780000 |
+| La Matanza |    1266461 |
+| Córdoba    |    1157507 |
+| Yerevan    |    1248700 |
+| Brisbane   |    1291117 |
++------------+------------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT Name, Region, LifeExpectancy from country
+    -> WHERE LifeExpectancy BETWEEN 80 AND 90;
++------------+-----------------+----------------+
+| Name       | Region          | LifeExpectancy |
++------------+-----------------+----------------+
+| Andorra    | Southern Europe |           83.5 |
+| Japan      | Eastern Asia    |           80.7 |
+| Macao      | Eastern Asia    |           81.6 |
+| Singapore  | Southeast Asia  |           80.1 |
+| San Marino | Southern Europe |           81.1 |
++------------+-----------------+----------------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT Name, Region, LifeExpectancy FROM country WHERE (LifeExpectancy BETWEEN 80 AND 90) AND (Region='Eastern Asia');
++-------+--------------+----------------+
+| Name  | Region       | LifeExpectancy |
++-------+--------------+----------------+
+| Japan | Eastern Asia |           80.7 |
+| Macao | Eastern Asia |           81.6 |
++-------+--------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT Name, Region, LifeExpectancy FROM country WHERE Lifeexpectancy NOT BETWEEN 45 AND 90 LIMIT 10;
++--------------------------+-----------------+----------------+
+| Name                     | Region          | LifeExpectancy |
++--------------------------+-----------------+----------------+
+| Angola                   | Central Africa  |           38.3 |
+| Botswana                 | Southern Africa |           39.3 |
+| Central African Republic | Central Africa  |           44.0 |
+| Mozambique               | Eastern Africa  |           37.5 |
+| Malawi                   | Eastern Africa  |           37.6 |
+| Namibia                  | Southern Africa |           42.5 |
+| Niger                    | Western Africa  |           41.3 |
+| Rwanda                   | Eastern Africa  |           39.3 |
+| Swaziland                | Southern Africa |           40.4 |
+| Uganda                   | Eastern Africa  |           42.9 |
++--------------------------+-----------------+----------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT Name, Region, LifeExpectancy FROM country WHERE Lifeexpectancy NOT BETWEEN 45 AND 90 ORDER BY LifeExpectancy LIMIT 10;
++------------+-----------------+----------------+
+| Name       | Region          | LifeExpectancy |
++------------+-----------------+----------------+
+| Zambia     | Eastern Africa  |           37.2 |
+| Mozambique | Eastern Africa  |           37.5 |
+| Malawi     | Eastern Africa  |           37.6 |
+| Zimbabwe   | Eastern Africa  |           37.8 |
+| Angola     | Central Africa  |           38.3 |
+| Botswana   | Southern Africa |           39.3 |
+| Rwanda     | Eastern Africa  |           39.3 |
+| Swaziland  | Southern Africa |           40.4 |
+| Niger      | Western Africa  |           41.3 |
+| Namibia    | Southern Africa |           42.5 |
++------------+-----------------+----------------+
+10 rows in set (0.01 sec)
+
+mysql> SELECT Name, Region, LifeExpectancy FROM country WHERE Lifeexpectancy NOT BETWEEN 45 AND 90 ORDER BY LifeExpectancy DESC LIMIT 10;
++--------------------------+-----------------+----------------+
+| Name                     | Region          | LifeExpectancy |
++--------------------------+-----------------+----------------+
+| Central African Republic | Central Africa  |           44.0 |
+| Uganda                   | Eastern Africa  |           42.9 |
+| Namibia                  | Southern Africa |           42.5 |
+| Niger                    | Western Africa  |           41.3 |
+| Swaziland                | Southern Africa |           40.4 |
+| Botswana                 | Southern Africa |           39.3 |
+| Rwanda                   | Eastern Africa  |           39.3 |
+| Angola                   | Central Africa  |           38.3 |
+| Zimbabwe                 | Eastern Africa  |           37.8 |
+| Malawi                   | Eastern Africa  |           37.6 |
++--------------------------+-----------------+----------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city ORDER BY Name LIMIT 5;
++------+-------------------------------+-------------+---------------------+------------+
+| ID   | Name                          | CountryCode | District            | Population |
++------+-------------------------------+-------------+---------------------+------------+
+|  698 | [San Cristóbal de] la Laguna  | ESP         | Canary Islands      |     127945 |
+|   20 | ´s-Hertogenbosch              | NLD         | Noord-Brabant       |     129170 |
+|  670 | A Coruña (La Coruña)          | ESP         | Galicia             |     243402 |
+| 3097 | Aachen                        | DEU         | Nordrhein-Westfalen |     243825 |
+| 3318 | Aalborg                       | DNK         | Nordjylland         |     161161 |
++------+-------------------------------+-------------+---------------------+------------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT * FROM city ORDER BY Name LIMIT 10;
++------+-------------------------------+-------------+---------------------+------------+
+| ID   | Name                          | CountryCode | District            | Population |
++------+-------------------------------+-------------+---------------------+------------+
+|  698 | [San Cristóbal de] la Laguna  | ESP         | Canary Islands      |     127945 |
+|   20 | ´s-Hertogenbosch              | NLD         | Noord-Brabant       |     129170 |
+|  670 | A Coruña (La Coruña)          | ESP         | Galicia             |     243402 |
+| 3097 | Aachen                        | DEU         | Nordrhein-Westfalen |     243825 |
+| 3318 | Aalborg                       | DNK         | Nordjylland         |     161161 |
+| 2760 | Aba                           | NGA         | Imo & Abia          |     298900 |
+| 1404 | Abadan                        | IRN         | Khuzestan           |     206073 |
+|  395 | Abaetetuba                    | BRA         | Pará                |     111258 |
+| 3683 | Abakan                        | RUS         | Hakassia            |     169200 |
+| 1849 | Abbotsford                    | CAN         | British Colombia    |     105403 |
++------+-------------------------------+-------------+---------------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city ORDER BY Population LIMIT 10;
++------+---------------------+-------------+-------------+------------+
+| ID   | Name                | CountryCode | District    | Population |
++------+---------------------+-------------+-------------+------------+
+| 2912 | Adamstown           | PCN         | –           |         42 |
+| 2317 | West Island         | CCK         | West Island |        167 |
+| 3333 | Fakaofo             | TKL         | Fakaofo     |        300 |
+| 3538 | Città del Vaticano  | VAT         | –           |        455 |
+| 2316 | Bantam              | CCK         | Home Island |        503 |
+| 2728 | Yaren               | NRU         | –           |        559 |
+|   62 | The Valley          | AIA         | –           |        595 |
+| 2805 | Alofi               | NIU         | –           |        682 |
+| 1791 | Flying Fish Cove    | CXR         | –           |        700 |
+| 2806 | Kingston            | NFK         | –           |        800 |
++------+---------------------+-------------+-------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city ORDER BY Population DESC LIMIT 10;
++------+-------------------+-------------+------------------+------------+
+| ID   | Name              | CountryCode | District         | Population |
++------+-------------------+-------------+------------------+------------+
+| 1024 | Mumbai (Bombay)   | IND         | Maharashtra      |   10500000 |
+| 2331 | Seoul             | KOR         | Seoul            |    9981619 |
+|  206 | São Paulo         | BRA         | São Paulo        |    9968485 |
+| 1890 | Shanghai          | CHN         | Shanghai         |    9696300 |
+|  939 | Jakarta           | IDN         | Jakarta Raya     |    9604900 |
+| 2822 | Karachi           | PAK         | Sindh            |    9269265 |
+| 3357 | Istanbul          | TUR         | Istanbul         |    8787958 |
+| 2515 | Ciudad de México  | MEX         | Distrito Federal |    8591309 |
+| 3580 | Moscow            | RUS         | Moscow (City)    |    8389200 |
+| 3793 | New York          | USA         | New York         |    8008278 |
++------+-------------------+-------------+------------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city ORDER BY Name DESC LIMIT 10;
++------+------------+-------------+--------------+------------+
+| ID   | Name       | CountryCode | District     | Population |
++------+------------+-------------+--------------+------------+
+| 3446 | Zytomyr    | UKR         | Zytomyr      |     297000 |
+|   28 | Zwolle     | NLD         | Overijssel   |     105819 |
+| 3145 | Zwickau    | DEU         | Saksi        |     104146 |
+| 3245 | Zürich     | CHE         | Zürich       |     336800 |
+| 2025 | Zunyi      | CHN         | Guizhou      |     261862 |
+| 2669 | Zumpango   | MEX         | México       |      99781 |
+| 3756 | Zukovski   | RUS         | Moskova      |      96500 |
+| 3404 | Zonguldak  | TUR         | Zonguldak    |     111542 |
+|   26 | Zoetermeer | NLD         | Zuid-Holland |     110214 |
+| 3671 | Zlatoust   | RUS         | Tšeljabinsk  |     196900 |
++------+------------+-------------+--------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city ORDER BY Name, Population DESC LIMIT 15;
++------+-------------------------------+-------------+---------------------+------------+
+| ID   | Name                          | CountryCode | District            | Population |
++------+-------------------------------+-------------+---------------------+------------+
+|  698 | [San Cristóbal de] la Laguna  | ESP         | Canary Islands      |     127945 |
+|   20 | ´s-Hertogenbosch              | NLD         | Noord-Brabant       |     129170 |
+|  670 | A Coruña (La Coruña)          | ESP         | Galicia             |     243402 |
+| 3097 | Aachen                        | DEU         | Nordrhein-Westfalen |     243825 |
+| 3318 | Aalborg                       | DNK         | Nordjylland         |     161161 |
+| 2760 | Aba                           | NGA         | Imo & Abia          |     298900 |
+| 1404 | Abadan                        | IRN         | Khuzestan           |     206073 |
+|  395 | Abaetetuba                    | BRA         | Pará                |     111258 |
+| 3683 | Abakan                        | RUS         | Hakassia            |     169200 |
+| 1849 | Abbotsford                    | CAN         | British Colombia    |     105403 |
+| 2747 | Abeokuta                      | NGA         | Ogun                |     427400 |
+|  478 | Aberdeen                      | GBR         | Scotland            |     213070 |
+| 3191 | Abha                          | SAU         | Asir                |     112300 |
+| 2812 | Abidjan                       | CIV         | Abidjan             |    2500000 |
+| 1703 | Abiko                         | JPN         | Chiba               |     126670 |
++------+-------------------------------+-------------+---------------------+------------+
+15 rows in set (0.01 sec)
+
+mysql> SELECT * FROM city ORDER BY Name, Population DESC LIMIT 20;
++------+-------------------------------+-------------+----------------------+------------+
+| ID   | Name                          | CountryCode | District             | Population |
++------+-------------------------------+-------------+----------------------+------------+
+|  698 | [San Cristóbal de] la Laguna  | ESP         | Canary Islands       |     127945 |
+|   20 | ´s-Hertogenbosch              | NLD         | Noord-Brabant        |     129170 |
+|  670 | A Coruña (La Coruña)          | ESP         | Galicia              |     243402 |
+| 3097 | Aachen                        | DEU         | Nordrhein-Westfalen  |     243825 |
+| 3318 | Aalborg                       | DNK         | Nordjylland          |     161161 |
+| 2760 | Aba                           | NGA         | Imo & Abia           |     298900 |
+| 1404 | Abadan                        | IRN         | Khuzestan            |     206073 |
+|  395 | Abaetetuba                    | BRA         | Pará                 |     111258 |
+| 3683 | Abakan                        | RUS         | Hakassia             |     169200 |
+| 1849 | Abbotsford                    | CAN         | British Colombia     |     105403 |
+| 2747 | Abeokuta                      | NGA         | Ogun                 |     427400 |
+|  478 | Aberdeen                      | GBR         | Scotland             |     213070 |
+| 3191 | Abha                          | SAU         | Asir                 |     112300 |
+| 2812 | Abidjan                       | CIV         | Abidjan              |    2500000 |
+| 1703 | Abiko                         | JPN         | Chiba                |     126670 |
+| 3989 | Abilene                       | USA         | Texas                |     115930 |
+| 1309 | Abohar                        | IND         | Punjab               |     107163 |
+| 2866 | Abottabad                     | PAK         | Nothwest Border Prov |     106000 |
+|   65 | Abu Dhabi                     | ARE         | Abu Dhabi            |     398695 |
+| 2754 | Abuja                         | NGA         | Federal Capital Dist |     350100 |
++------+-------------------------------+-------------+----------------------+------------+
+20 rows in set (0.01 sec)
+
+
+mysql> SELECT * FROM city ORDER BY Name DESC LIMIT 20;
++------+---------------+-------------+----------------------+------------+
+| ID   | Name          | CountryCode | District             | Population |
++------+---------------+-------------+----------------------+------------+
+| 3446 | Zytomyr       | UKR         | Zytomyr              |     297000 |
+|   28 | Zwolle        | NLD         | Overijssel           |     105819 |
+| 3145 | Zwickau       | DEU         | Saksi                |     104146 |
+| 3245 | Zürich        | CHE         | Zürich               |     336800 |
+| 2025 | Zunyi         | CHN         | Guizhou              |     261862 |
+| 2669 | Zumpango      | MEX         | México               |      99781 |
+| 3756 | Zukovski      | RUS         | Moskova              |      96500 |
+| 3404 | Zonguldak     | TUR         | Zonguldak            |     111542 |
+|   26 | Zoetermeer    | NLD         | Zuid-Holland         |     110214 |
+| 3671 | Zlatoust      | RUS         | Tšeljabinsk          |     196900 |
+| 2207 | Zixing        | CHN         | Hunan                |     110048 |
+| 2621 | Zitácuaro     | MEX         | Michoacán de Ocampo  |     137970 |
+| 2739 | Zinder        | NER         | Zinder               |     120892 |
+| 2643 | Zinacantepec  | MEX         | México               |     121715 |
+| 3201 | Ziguinchor    | SEN         | Ziguinchor           |     192000 |
+| 1975 | Zigong        | CHN         | Sichuan              |     393184 |
+| 2963 | Zielona Góra  | POL         | Lubuskie             |     118182 |
+| 1921 | Zibo          | CHN         | Shandong             |    1140000 |
+| 1971 | Zhuzhou       | CHN         | Hunan                |     409924 |
+| 2186 | Zhumadian     | CHN         | Henan                |     123232 |
++------+---------------+-------------+----------------------+------------+
+20 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city ORDER BY CountryCode, Population DESC LIMIT 20;
++-----+------------------+-------------+------------------+------------+
+| ID  | Name             | CountryCode | District         | Population |
++-----+------------------+-------------+------------------+------------+
+| 129 | Oranjestad       | ABW         | –                |      29034 |
+|   1 | Kabul            | AFG         | Kabol            |    1780000 |
+|   2 | Qandahar         | AFG         | Qandahar         |     237500 |
+|   3 | Herat            | AFG         | Herat            |     186800 |
+|   4 | Mazar-e-Sharif   | AFG         | Balkh            |     127800 |
+|  56 | Luanda           | AGO         | Luanda           |    2022000 |
+|  57 | Huambo           | AGO         | Huambo           |     163100 |
+|  58 | Lobito           | AGO         | Benguela         |     130000 |
+|  59 | Benguela         | AGO         | Benguela         |     128300 |
+|  60 | Namibe           | AGO         | Namibe           |     118200 |
+|  61 | South Hill       | AIA         | –                |        961 |
+|  62 | The Valley       | AIA         | –                |        595 |
+|  34 | Tirana           | ALB         | Tirana           |     270000 |
+|  55 | Andorra la Vella | AND         | Andorra la Vella |      21189 |
+|  33 | Willemstad       | ANT         | Curaçao          |       2345 |
+|  64 | Dubai            | ARE         | Dubai            |     669181 |
+|  65 | Abu Dhabi        | ARE         | Abu Dhabi        |     398695 |
+|  66 | Sharja           | ARE         | Sharja           |     320095 |
+|  67 | al-Ayn           | ARE         | Abu Dhabi        |     225970 |
+|  68 | Ajman            | ARE         | Ajman            |     114395 |
++-----+------------------+-------------+------------------+------------+
+20 rows in set (0.00 sec)
+
+mysql> SELECT COUNT(ID), CountryCode FROM city GROUP BY CountryCode LIMIT 5;
++-----------+-------------+
+| COUNT(ID) | CountryCode |
++-----------+-------------+
+|         1 | ABW         |
+|         4 | AFG         |
+|         5 | AGO         |
+|         2 | AIA         |
+|         1 | ALB         |
++-----------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city WHERE CountryCode="ABW";
++-----+------------+-------------+----------+------------+
+| ID  | Name       | CountryCode | District | Population |
++-----+------------+-------------+----------+------------+
+| 129 | Oranjestad | ABW         | –        |      29034 |
++-----+------------+-------------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM city WHERE CountryCode="AFG";
++----+----------------+-------------+----------+------------+
+| ID | Name           | CountryCode | District | Population |
++----+----------------+-------------+----------+------------+
+|  1 | Kabul          | AFG         | Kabol    |    1780000 |
+|  2 | Qandahar       | AFG         | Qandahar |     237500 |
+|  3 | Herat          | AFG         | Herat    |     186800 |
+|  4 | Mazar-e-Sharif | AFG         | Balkh    |     127800 |
++----+----------------+-------------+----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT AVG(Population), District
+    -> FROM city
+    -> WHERE CountryCode="IDN"
+    -> GROUP BY District;
++-----------------+---------------------+
+| AVG(Population) | District            |
++-----------------+---------------------+
+|    9604900.0000 | Jakarta Raya        |
+|     377868.3846 | East Java           |
+|     321531.4400 | West Java           |
+|     373713.8571 | Sumatera Utara      |
+|     673382.0000 | Sumatera Selatan    |
+|     286595.7273 | Central Java        |
+|    1060257.0000 | Sulawesi Selatan    |
+|     680332.0000 | Lampung             |
+|     534474.0000 | Sumatera Barat      |
+|     482931.0000 | Kalimantan Selatan  |
+|     206803.0000 | Riau                |
+|     435000.0000 | Bali                |
+|     262872.0000 | Yogyakarta          |
+|     409632.0000 | Kalimantan Barat    |
+|     368963.5000 | Kalimantan Timur    |
+|     385201.0000 | Jambi               |
+|     213173.0000 | Sulawesi Utara      |
+|     306600.0000 | Nusa Tenggara Barat |
+|     249312.0000 | Molukit             |
+|     146439.0000 | Bengkulu            |
+|     126504.5000 | Aceh                |
+|     142800.0000 | Sulawesi Tengah     |
+|     129300.0000 | Nusa Tenggara Timur |
+|      99693.0000 | Kalimantan Tengah   |
+|      94800.0000 | Sulawesi Tenggara   |
+|      94700.0000 | West Irian          |
++-----------------+---------------------+
+26 rows in set (0.00 sec)
+
+mysql> SELECT AVG(Population), District FROM city WHERE CountryCode="IDN" GROUP BY District LIMIT 5;
++-----------------+------------------+
+| AVG(Population) | District         |
++-----------------+------------------+
+|    9604900.0000 | Jakarta Raya     |
+|     377868.3846 | East Java        |
+|     321531.4400 | West Java        |
+|     373713.8571 | Sumatera Utara   |
+|     673382.0000 | Sumatera Selatan |
++-----------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city WHERE District="Jakarta Raya";
++-----+---------+-------------+--------------+------------+
+| ID  | Name    | CountryCode | District     | Population |
++-----+---------+-------------+--------------+------------+
+| 939 | Jakarta | IDN         | Jakarta Raya |    9604900 |
++-----+---------+-------------+--------------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM city WHERE District="East Java";
++------+-------------+-------------+-----------+------------+
+| ID   | Name        | CountryCode | District  | Population |
++------+-------------+-------------+-----------+------------+
+|  940 | Surabaya    | IDN         | East Java |    2663820 |
+|  947 | Malang      | IDN         | East Java |     716862 |
+|  970 | Kediri      | IDN         | East Java |     253760 |
+|  972 | Jember      | IDN         | East Java |     218500 |
+|  979 | Madiun      | IDN         | East Java |     171532 |
+|  984 | Pasuruan    | IDN         | East Java |     134019 |
+|  990 | Waru        | IDN         | East Java |     124300 |
+|  993 | Blitar      | IDN         | East Java |     122600 |
+|  995 | Probolinggo | IDN         | East Java |     120770 |
+| 1000 | Taman       | IDN         | East Java |     107000 |
+| 1008 | Mojokerto   | IDN         | East Java |      96626 |
+| 1017 | Jombang     | IDN         | East Java |      92600 |
+| 1022 | Banyuwangi  | IDN         | East Java |      89900 |
++------+-------------+-------------+-----------+------------+
+13 rows in set (0.01 sec)
+
+mysql> SELECT AVG(Population), District FROM city WHERE CountryCode="IDN" GROUP BY District LIMIT 5;
++-----------------+------------------+
+| AVG(Population) | District         |
++-----------------+------------------+
+|    9604900.0000 | Jakarta Raya     |
+|     377868.3846 | East Java        |
+|     321531.4400 | West Java        |
+|     373713.8571 | Sumatera Utara   |
+|     673382.0000 | Sumatera Selatan |
++-----------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT SUM(Population), District FROM city WHERE CountryCode="IDN" GROUP BY District LIMIT 5;
++-----------------+------------------+
+| SUM(Population) | District         |
++-----------------+------------------+
+|         9604900 | Jakarta Raya     |
+|         4912289 | East Java        |
+|         8038286 | West Java        |
+|         2615997 | Sumatera Utara   |
+|         1346764 | Sumatera Selatan |
++-----------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT SUM(Population) AS total_populasi, District FROM city WHERE CountryCode="IDN" GROUP BY District LIMIT 5;
++----------------+------------------+
+| total_populasi | District         |
++----------------+------------------+
+|        9604900 | Jakarta Raya     |
+|        4912289 | East Java        |
+|        8038286 | West Java        |
+|        2615997 | Sumatera Utara   |
+|        1346764 | Sumatera Selatan |
++----------------+------------------+
+5 rows in set (0.02 sec)
+
+mysql> SELECT SUM(Population) AS total_populasi, District AS provinsi FROM city WHERE CountryCode="IDN" GROUP BY District LIMIT 5;
++----------------+------------------+
+| total_populasi | provinsi         |
++----------------+------------------+
+|        9604900 | Jakarta Raya     |
+|        4912289 | East Java        |
+|        8038286 | West Java        |
+|        2615997 | Sumatera Utara   |
+|        1346764 | Sumatera Selatan |
++----------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM city LIMIT 10;
++----+----------------+-------------+---------------+------------+
+| ID | Name           | CountryCode | District      | Population |
++----+----------------+-------------+---------------+------------+
+|  1 | Kabul          | AFG         | Kabol         |    1780000 |
+|  2 | Qandahar       | AFG         | Qandahar      |     237500 |
+|  3 | Herat          | AFG         | Herat         |     186800 |
+|  4 | Mazar-e-Sharif | AFG         | Balkh         |     127800 |
+|  5 | Amsterdam      | NLD         | Noord-Holland |     731200 |
+|  6 | Rotterdam      | NLD         | Zuid-Holland  |     593321 |
+|  7 | Haag           | NLD         | Zuid-Holland  |     440900 |
+|  8 | Utrecht        | NLD         | Utrecht       |     234323 |
+|  9 | Eindhoven      | NLD         | Noord-Brabant |     201843 |
+| 10 | Tilburg        | NLD         | Noord-Brabant |     193238 |
++----+----------------+-------------+---------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT SUM(Population), CountryCode, District FROM city GROUP BY CountryCode, District LIMIT 10;
++-----------------+-------------+---------------+
+| SUM(Population) | CountryCode | District      |
++-----------------+-------------+---------------+
+|         1780000 | AFG         | Kabol         |
+|          237500 | AFG         | Qandahar      |
+|          186800 | AFG         | Herat         |
+|          127800 | AFG         | Balkh         |
+|         1219028 | NLD         | Noord-Holland |
+|         1476710 | NLD         | Zuid-Holland  |
+|          360593 | NLD         | Utrecht       |
+|          684649 | NLD         | Noord-Brabant |
+|          172701 | NLD         | Groningen     |
+|          545548 | NLD         | Gelderland    |
++-----------------+-------------+---------------+
+10 rows in set (0.01 sec)
+
+mysql> SELECT * FROM city where district="Zuid-Holland" LIMIT 10;
++----+------------+-------------+--------------+------------+
+| ID | Name       | CountryCode | District     | Population |
++----+------------+-------------+--------------+------------+
+|  6 | Rotterdam  | NLD         | Zuid-Holland |     593321 |
+|  7 | Haag       | NLD         | Zuid-Holland |     440900 |
+| 23 | Dordrecht  | NLD         | Zuid-Holland |     119811 |
+| 24 | Leiden     | NLD         | Zuid-Holland |     117196 |
+| 26 | Zoetermeer | NLD         | Zuid-Holland |     110214 |
+| 30 | Delft      | NLD         | Zuid-Holland |      95268 |
++----+------------+-------------+--------------+------------+
+6 rows in set (0.01 sec)
+
+mysql> SELECT SUM(Population), CountryCode, District FROM city GROUP BY CountryCode, District ORDER BY CountryCode LIMIT 10;
++-----------------+-------------+----------+
+| SUM(Population) | CountryCode | District |
++-----------------+-------------+----------+
+|           29034 | ABW         | –        |
+|          127800 | AFG         | Balkh    |
+|          186800 | AFG         | Herat    |
+|         1780000 | AFG         | Kabol    |
+|          237500 | AFG         | Qandahar |
+|          258300 | AGO         | Benguela |
+|          163100 | AGO         | Huambo   |
+|         2022000 | AGO         | Luanda   |
+|          118200 | AGO         | Namibe   |
+|            1556 | AIA         | –        |
++-----------------+-------------+----------+
+10 rows in set (0.01 sec)
+
+mysql> SELECT AVG(Population) AS rata_rata, District AS provinsi FROM city WHERE CountryCode="IDN" GROUP BY District HAVING rata_rata > 500000 LIMIT 10;
++--------------+------------------+
+| rata_rata    | provinsi         |
++--------------+------------------+
+| 9604900.0000 | Jakarta Raya     |
+|  673382.0000 | Sumatera Selatan |
+| 1060257.0000 | Sulawesi Selatan |
+|  680332.0000 | Lampung          |
+|  534474.0000 | Sumatera Barat   |
++--------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT AVG(Population) AS rata_rata, District AS provinsi FROM city WHERE CountryCode="IDN" AND rata_rata > 500000 GROUP BY District LIMIT 10;
+ERROR 1054 (42S22): Unknown column 'rata_rata' in 'where clause'
+mysql> SELECT AVG(Population) AS rata_rata,
+    -> District AS provinsi
+    -> FROM city
+    -> WHERE CountryCode="IDN"
+    -> GROUP BY District
+    -> 
+    -> HAVING provinsi lIKE "K%";
++-------------+--------------------+
+| rata_rata   | provinsi           |
++-------------+--------------------+
+| 482931.0000 | Kalimantan Selatan |
+| 409632.0000 | Kalimantan Barat   |
+| 368963.5000 | Kalimantan Timur   |
+|  99693.0000 | Kalimantan Tengah  |
++-------------+--------------------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT AVG(Population) AS rata_rata, District AS provinsi FROM city WHERE CountryCode="IDN" GROUP BY District  HAVING provinsi LIKE "Kalimantan%";
++-------------+--------------------+
+| rata_rata   | provinsi           |
++-------------+--------------------+
+| 482931.0000 | Kalimantan Selatan |
+| 409632.0000 | Kalimantan Barat   |
+| 368963.5000 | Kalimantan Timur   |
+|  99693.0000 | Kalimantan Tengah  |
++-------------+--------------------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT AVG(Population) AS "rata rata", District AS provinsi FROM city WHERE CountryCode="IDN" GROUP BY District  HAVING provinsi LIKE "Kalimantan%";
++-------------+--------------------+
+| rata rata   | provinsi           |
++-------------+--------------------+
+| 482931.0000 | Kalimantan Selatan |
+| 409632.0000 | Kalimantan Barat   |
+| 368963.5000 | Kalimantan Timur   |
+|  99693.0000 | Kalimantan Tengah  |
++-------------+--------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT AVG(Population) AS "rata-rata", District AS provinsi FROM city WHERE CountryCode="IDN" GROUP BY District  HAVING provinsi LIKE "Kalimantan%";
++-------------+--------------------+
+| rata-rata   | provinsi           |
++-------------+--------------------+
+| 482931.0000 | Kalimantan Selatan |
+| 409632.0000 | Kalimantan Barat   |
+| 368963.5000 | Kalimantan Timur   |
+|  99693.0000 | Kalimantan Tengah  |
++-------------+--------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT SUM(Population) AS total_population 
+    -> FROM city
+    -> WHERE CountryCode="IDN";
++------------------+
+| total_population |
++------------------+
+|         37485695 |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT COUNT(name) AS total_kota
+    -> FROM city
+    -> WHERE CountryCode = "IDN";
++------------+
+| total_kota |
++------------+
+|         85 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM city LIMIT 10;
++----+----------------+-------------+---------------+------------+
+| ID | Name           | CountryCode | District      | Population |
++----+----------------+-------------+---------------+------------+
+|  1 | Kabul          | AFG         | Kabol         |    1780000 |
+|  2 | Qandahar       | AFG         | Qandahar      |     237500 |
+|  3 | Herat          | AFG         | Herat         |     186800 |
+|  4 | Mazar-e-Sharif | AFG         | Balkh         |     127800 |
+|  5 | Amsterdam      | NLD         | Noord-Holland |     731200 |
+|  6 | Rotterdam      | NLD         | Zuid-Holland  |     593321 |
+|  7 | Haag           | NLD         | Zuid-Holland  |     440900 |
+|  8 | Utrecht        | NLD         | Utrecht       |     234323 |
+|  9 | Eindhoven      | NLD         | Noord-Brabant |     201843 |
+| 10 | Tilburg        | NLD         | Noord-Brabant |     193238 |
++----+----------------+-------------+---------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT AVG(Population) AS rata_rata_populasi 
+    -> FROM city
+    -> WHERE CountryCode="IDN";
++--------------------+
+| rata_rata_populasi |
++--------------------+
+|        441008.1765 |
++--------------------+
+1 row in set (0.04 sec)
+
+mysql> SELECT MIN(Population) AS populasi_terkecil
+    -> FROM city
+    -> WHERE CountryCode="IDN";
++-------------------+
+| populasi_terkecil |
++-------------------+
+|             89900 |
++-------------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT MAX(Population) AS populasi_terkecil FROM city WHERE CountryCode="IDN";
++-------------------+
+| populasi_terkecil |
++-------------------+
+|           9604900 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Population AS populasi_terkecil, Name FROM city ORDER BY populasi_terkecil LIMIT 1;
++-------------------+-----------+
+| populasi_terkecil | Name      |
++-------------------+-----------+
+|                42 | Adamstown |
++-------------------+-----------+
+1 row in set (0.01 sec)
+
+mysql> SELECT Population AS populasi_terkecil, Name FROM city WHERE CountryCode="IDN" ORDER BY populasi_terkecil LIMIT 1;
++-------------------+------------+
+| populasi_terkecil | Name       |
++-------------------+------------+
+|             89900 | Banyuwangi |
++-------------------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Population AS populasi_terkecil, Name FROM city WHERE CountryCode="IDN" ORDER BY populasi_terkecil LIMIT 1;
++-------------------+------------+
+| populasi_terkecil | Name       |
++-------------------+------------+
+|             89900 | Banyuwangi |
++-------------------+------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT SUM(Population), District FROM city WHERE CountryCode="IDN" GROUP BY District;
++-----------------+---------------------+
+| SUM(Population) | District            |
++-----------------+---------------------+
+|         9604900 | Jakarta Raya        |
+|         4912289 | East Java           |
+|         8038286 | West Java           |
+|         2615997 | Sumatera Utara      |
+|         1346764 | Sumatera Selatan    |
+|         3152553 | Central Java        |
+|         1060257 | Sulawesi Selatan    |
+|          680332 | Lampung             |
+|          534474 | Sumatera Barat      |
+|          482931 | Kalimantan Selatan  |
+|          620409 | Riau                |
+|          435000 | Bali                |
+|          525744 | Yogyakarta          |
+|          409632 | Kalimantan Barat    |
+|          737927 | Kalimantan Timur    |
+|          385201 | Jambi               |
+|          426346 | Sulawesi Utara      |
+|          306600 | Nusa Tenggara Barat |
+|          249312 | Molukit             |
+|          146439 | Bengkulu            |
+|          253009 | Aceh                |
+|          142800 | Sulawesi Tengah     |
+|          129300 | Nusa Tenggara Timur |
+|           99693 | Kalimantan Tengah   |
+|           94800 | Sulawesi Tenggara   |
+|           94700 | West Irian          |
++-----------------+---------------------+
+26 rows in set (0.01 sec)
+
+mysql> SELECT SUM(Population) AS total_populasi, District FROM city WHERE CountryCode="IDN" GROUP BY District ORDER BY total_populasi LIMIT 1;
++----------------+------------+
+| total_populasi | District   |
++----------------+------------+
+|          94700 | West Irian |
++----------------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Population, Name
+    -> FROM city
+    -> WHERE Population = (SELECT MIN(Population) FROM city);
++------------+-----------+
+| Population | Name      |
++------------+-----------+
+|         42 | Adamstown |
++------------+-----------+
+1 row in set (0.02 sec)
+
+mysql> SELECT Population, Name FROM city WHERE Population = (SELECT MIN(Population) FROM city) AND CountryCode="IDN";
+Empty set (0.00 sec)
+
+mysql> SELECT Population, Name FROM city WHERE Population = (SELECT MIN(Population) FROM city WHERE CountryCode="IDN");
++------------+----------------+
+| Population | Name           |
++------------+----------------+
+|      89900 | Banyuwangi     |
+|      89900 | Tanjung Pinang |
++------------+----------------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT Population AS populasi_terkecil, Name FROM city WHERE CountryCode="IDN" ORDER BY populasi_terkecil limit 5;
++-------------------+------------------+
+| populasi_terkecil | Name             |
++-------------------+------------------+
+|             89900 | Tanjung Pinang   |
+|             89900 | Banyuwangi       |
+|             91100 | Sawangan         |
+|             91200 | Padang Sidempuan |
+|             91871 | Batam            |
++-------------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Population AS populasi_terkecil, Name, District FROM city WHERE CountryCode="IDN" ORDER BY populasi_terkecil limit 5;
++-------------------+------------------+----------------+
+| populasi_terkecil | Name             | District       |
++-------------------+------------------+----------------+
+|             89900 | Tanjung Pinang   | Riau           |
+|             89900 | Banyuwangi       | East Java      |
+|             91100 | Sawangan         | West Java      |
+|             91200 | Padang Sidempuan | Sumatera Utara |
+|             91871 | Batam            | Riau           |
++-------------------+------------------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Population, Name, District FROM city WHERE Population = (SELECT MIN(Population) FROM city WHERE CountryCode="IDN");
++------------+----------------+-----------+
+| Population | Name           | District  |
++------------+----------------+-----------+
+|      89900 | Banyuwangi     | East Java |
+|      89900 | Tanjung Pinang | Riau      |
++------------+----------------+-----------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT Name, Round(Lifeexpectancy) FROM Country LIMIT 5;
++-------------+-----------------------+
+| Name        | Round(Lifeexpectancy) |
++-------------+-----------------------+
+| Aruba       |                    78 |
+| Afghanistan |                    46 |
+| Angola      |                    38 |
+| Anguilla    |                    76 |
+| Albania     |                    72 |
++-------------+-----------------------+
+5 rows in set (0.02 sec)
+
+mysql> SELECT Name, LifeExpectancy FROM Country LIMIT 5;
++-------------+----------------+
+| Name        | LifeExpectancy |
++-------------+----------------+
+| Aruba       |           78.4 |
+| Afghanistan |           45.9 |
+| Angola      |           38.3 |
+| Anguilla    |           76.1 |
+| Albania     |           71.6 |
++-------------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Name, Region, Population/SurfaceArea AS population_density 
+    -> FROM country
+    -> WHERE Region = "Southeast Asia";
++-------------+----------------+--------------------+
+| Name        | Region         | population_density |
++-------------+----------------+--------------------+
+| Brunei      | Southeast Asia |            56.8951 |
+| Indonesia   | Southeast Asia |           111.3675 |
+| Cambodia    | Southeast Asia |            61.6897 |
+| Laos        | Southeast Asia |            22.9434 |
+| Myanmar     | Southeast Asia |            67.4143 |
+| Malaysia    | Southeast Asia |            67.4555 |
+| Philippines | Southeast Asia |           253.2233 |
+| Singapore   | Southeast Asia |          5771.8447 |
+| Thailand    | Southeast Asia |           119.6593 |
+| East Timor  | Southeast Asia |            59.4998 |
+| Vietnam     | Southeast Asia |           240.6833 |
++-------------+----------------+--------------------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT Name, Region, ROUND(Population/SurfaceArea, 2) AS population_density FROM country WHERE Region = "Southeast Asia";
++-------------+----------------+--------------------+
+| Name        | Region         | population_density |
++-------------+----------------+--------------------+
+| Brunei      | Southeast Asia |              56.90 |
+| Indonesia   | Southeast Asia |             111.37 |
+| Cambodia    | Southeast Asia |              61.69 |
+| Laos        | Southeast Asia |              22.94 |
+| Myanmar     | Southeast Asia |              67.41 |
+| Malaysia    | Southeast Asia |              67.46 |
+| Philippines | Southeast Asia |             253.22 |
+| Singapore   | Southeast Asia |            5771.84 |
+| Thailand    | Southeast Asia |             119.66 |
+| East Timor  | Southeast Asia |              59.50 |
+| Vietnam     | Southeast Asia |             240.68 |
++-------------+----------------+--------------------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT Name, LENGTH(Name) AS length_name
+    -> FROM country
+    -> WHERE Region ="Southeast Asia"
+    -> ;
++-------------+-------------+
+| Name        | length_name |
++-------------+-------------+
+| Brunei      |           6 |
+| Indonesia   |           9 |
+| Cambodia    |           8 |
+| Laos        |           4 |
+| Myanmar     |           7 |
+| Malaysia    |           8 |
+| Philippines |          11 |
+| Singapore   |           9 |
+| Thailand    |           8 |
+| East Timor  |          10 |
+| Vietnam     |           7 |
++-------------+-------------+
+11 rows in set (0.01 sec)
+
+mysql> SELECT Name, UCASE(Name) AS Name
+    -> FROM Country
+    -> WHERE Region="Southeast Asia";
++-------------+-------------+
+| Name        | Name        |
++-------------+-------------+
+| Brunei      | BRUNEI      |
+| Indonesia   | INDONESIA   |
+| Cambodia    | CAMBODIA    |
+| Laos        | LAOS        |
+| Myanmar     | MYANMAR     |
+| Malaysia    | MALAYSIA    |
+| Philippines | PHILIPPINES |
+| Singapore   | SINGAPORE   |
+| Thailand    | THAILAND    |
+| East Timor  | EAST TIMOR  |
+| Vietnam     | VIETNAM     |
++-------------+-------------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT UCASE(Name) AS Name FROM Country WHERE Region="Southeast Asia";
++-------------+
+| Name        |
++-------------+
+| BRUNEI      |
+| INDONESIA   |
+| CAMBODIA    |
+| LAOS        |
+| MYANMAR     |
+| MALAYSIA    |
+| PHILIPPINES |
+| SINGAPORE   |
+| THAILAND    |
+| EAST TIMOR  |
+| VIETNAM     |
++-------------+
+11 rows in set (0.01 sec)
+
+mysql> SELECT UPPER(Name) AS Name FROM Country WHERE Region="Southeast Asia";
++-------------+
+| Name        |
++-------------+
+| BRUNEI      |
+| INDONESIA   |
+| CAMBODIA    |
+| LAOS        |
+| MYANMAR     |
+| MALAYSIA    |
+| PHILIPPINES |
+| SINGAPORE   |
+| THAILAND    |
+| EAST TIMOR  |
+| VIETNAM     |
++-------------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT LCASE(Name) AS Name FROM Country WHERE Region="Southeast Asia";
++-------------+
+| Name        |
++-------------+
+| brunei      |
+| indonesia   |
+| cambodia    |
+| laos        |
+| myanmar     |
+| malaysia    |
+| philippines |
+| singapore   |
+| thailand    |
+| east timor  |
+| vietnam     |
++-------------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT LOWER(Name) AS Name FROM Country WHERE Region="Southeast Asia";
++-------------+
+| Name        |
++-------------+
+| brunei      |
+| indonesia   |
+| cambodia    |
+| laos        |
+| myanmar     |
+| malaysia    |
+| philippines |
+| singapore   |
+| thailand    |
+| east timor  |
+| vietnam     |
++-------------+
+11 rows in set (0.00 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| classicmodels      |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| seller             |
+| shop               |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.01 sec)
+
+mysql> USE classicmodels;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> SHOW TABLES;
++-------------------------+
+| Tables_in_classicmodels |
++-------------------------+
+| city                    |
+| country                 |
+| countrylanguage         |
+| customers               |
+| employees               |
+| offices                 |
+| orderdetails            |
+| orders                  |
+| payments                |
+| productlines            |
+| products                |
++-------------------------+
+11 rows in set (0.01 sec)
+
+mysql> SELECT * FROM payments LIMIT 5;
++----------------+-------------+-------------+----------+
+| customerNumber | checkNumber | paymentDate | amount   |
++----------------+-------------+-------------+----------+
+|            103 | HQ336336    | 2004-10-19  |  6066.78 |
+|            103 | JM555205    | 2003-06-05  | 14571.44 |
+|            103 | OM314933    | 2004-12-18  |  1676.14 |
+|            112 | BO864823    | 2004-12-17  | 14191.12 |
+|            112 | HQ55022     | 2003-06-06  | 32641.98 |
++----------------+-------------+-------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT customerNumber, DAY(paymentDate) FROM payments WHERE amount > 11 LIMIT 5;
++----------------+------------------+
+| customerNumber | DAY(paymentDate) |
++----------------+------------------+
+|            103 |               19 |
+|            103 |                5 |
+|            103 |               18 |
+|            112 |               17 |
+|            112 |                6 |
++----------------+------------------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT cutomernumber, DAYNAME(paymentDate) FROM payments LIMIT 5;
+ERROR 1054 (42S22): Unknown column 'cutomernumber' in 'field list'
+mysql> SELECT cuStomerNumber, DAYNAME(paymentDate) FROM payments LIMIT 5;
++----------------+----------------------+
+| cuStomerNumber | DAYNAME(paymentDate) |
++----------------+----------------------+
+|            103 | Tuesday              |
+|            103 | Thursday             |
+|            103 | Saturday             |
+|            112 | Friday               |
+|            112 | Friday               |
++----------------+----------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT DAYNAME(paymentDate) AS day, AVG(amount) AS amount_average
+    -> FROM payments
+    -> GROUP BY day
+    -> ORDER BY amount_average DESC;
++-----------+----------------+
+| day       | amount_average |
++-----------+----------------+
+| Friday    |   37695.399333 |
+| Monday    |   33845.814651 |
+| Saturday  |   32663.066000 |
+| Tuesday   |   31257.283415 |
+| Wednesday |   30696.965882 |
+| Sunday    |   30384.825000 |
+| Thursday  |   28618.274375 |
++-----------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT SUM(amount) AS total_amount FROM payments
+    -> WHERE MONTH(paymentDate) = 8;
++--------------+
+| total_amount |
++--------------+
+|    624299.16 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT customerNumber, MONTH(paymentDate) FROM payments WHERE amount > 11 LIMIT 5;
++----------------+--------------------+
+| customerNumber | MONTH(paymentDate) |
++----------------+--------------------+
+|            103 |                 10 |
+|            103 |                  6 |
+|            103 |                 12 |
+|            112 |                 12 |
+|            112 |                  6 |
++----------------+--------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT customerNumber, MONTHNAME(paymentDate) FROM payments WHERE amount > 11 LIMIT 5;
++----------------+------------------------+
+| customerNumber | MONTHNAME(paymentDate) |
++----------------+------------------------+
+|            103 | October                |
+|            103 | June                   |
+|            103 | December               |
+|            112 | December               |
+|            112 | June                   |
++----------------+------------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT DAYNAME(DATE(payment-date) + INTERVAL 1 DAY) AS one_day_after_payment
+    -> FROM pyamn^C
+mysql> SELECT DAYNAME(DATE(paymentDate) + INTERVAL 1 DAY) AS one_day_after_payment
+    -> FROM payments LIMIT 5;
++-----------------------+
+| one_day_after_payment |
++-----------------------+
+| Wednesday             |
+| Friday                |
+| Sunday                |
+| Saturday              |
+| Saturday              |
++-----------------------+
+5 rows in set (0.05 sec)
+
+mysql> SELECT customerNumber, DAYNAME(DATE(paymentDate) + INTERVAL 1 DAY) AS one_day_after_payment FROM payments LIMIT 5;
++----------------+-----------------------+
+| customerNumber | one_day_after_payment |
++----------------+-----------------------+
+|            103 | Wednesday             |
+|            103 | Friday                |
+|            103 | Sunday                |
+|            112 | Saturday              |
+|            112 | Saturday              |
++----------------+-----------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT customerNumber, paymentDate from payments LIMIT 5;
++----------------+-------------+
+| customerNumber | paymentDate |
++----------------+-------------+
+|            103 | 2004-10-19  |
+|            103 | 2003-06-05  |
+|            103 | 2004-12-18  |
+|            112 | 2004-12-17  |
+|            112 | 2003-06-06  |
++----------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT customerNumber, paymentDate, YEAR(paymentDate) from payments LIMIT 5;
++----------------+-------------+-------------------+
+| customerNumber | paymentDate | YEAR(paymentDate) |
++----------------+-------------+-------------------+
+|            103 | 2004-10-19  |              2004 |
+|            103 | 2003-06-05  |              2003 |
+|            103 | 2004-12-18  |              2004 |
+|            112 | 2004-12-17  |              2004 |
+|            112 | 2003-06-06  |              2003 |
++----------------+-------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> DESC payments;
++----------------+---------------+------+-----+---------+-------+
+| Field          | Type          | Null | Key | Default | Extra |
++----------------+---------------+------+-----+---------+-------+
+| customerNumber | int           | NO   | PRI | NULL    |       |
+| checkNumber    | varchar(50)   | NO   | PRI | NULL    |       |
+| paymentDate    | date          | NO   |     | NULL    |       |
+| amount         | decimal(10,2) | NO   |     | NULL    |       |
++----------------+---------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)

@@ -1,0 +1,5 @@
+x = input("Masukkan angka: ")
+x = int(x)
+print("Hasil kuadrat dari", x, "adalah", x**2)
+print(f"Hasil kuadrat dari {x} adalah {x**2}")
+print("Hasil kuadrat dari {} adalah {}".format(x, x**2))

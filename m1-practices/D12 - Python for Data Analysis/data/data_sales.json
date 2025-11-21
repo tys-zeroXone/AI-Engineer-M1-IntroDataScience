@@ -1,0 +1,6 @@
+[
+  {"Name": "Andy", "Product": "Keyboard", "Sales": 500},
+  {"Name": "Bella", "Product": "Mouse", "Sales": 350},
+  {"Name": "Chris", "Product": "Monitor", "Sales": 800},
+  {"Name": "Diana", "Product": "Headset", "Sales": 450}
+]

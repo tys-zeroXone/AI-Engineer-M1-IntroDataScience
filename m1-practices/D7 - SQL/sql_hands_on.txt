@@ -1,0 +1,634 @@
+(base) arifagustyawan@nomadicts-mac-mini ~ % mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.4.7 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE DATABASE seller;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| seller             |
+| sys                |
++--------------------+
+5 rows in set (0.01 sec)
+
+mysql> USE seller;
+Database changed
+mysql> SHOW TABLES;
+Empty set (0.00 sec)
+
+mysql> DROP DATABASE seller;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.01 sec)
+
+mysql> CREATE DATABASE seller;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| seller             |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> USE seller;
+Database changed
+mysql> CREATE TABLE persons(
+    -> person_id INT,
+    -> name VARCHAR(255),
+    -> address VARCHAR(255),
+    -> city VARCHAR(255));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SHOW TABLES;
++------------------+
+| Tables_in_seller |
++------------------+
+| persons          |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE persons_copy AS
+    -> SELECT person_id, name, address, city FROM persons;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW TABLES;
++------------------+
+| Tables_in_seller |
++------------------+
+| persons          |
+| persons_copy     |
++------------------+
+2 rows in set (0.02 sec)
+
+mysql> CREATE DATABASE shop;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE shop;
+Database changed
+mysql> CREATE TABLE persons AS
+    -> SELECT person_id, name, address, city FROM seller.persons;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_shop |
++----------------+
+| persons        |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> use seller;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> SHOW TABLES;
++------------------+
+| Tables_in_seller |
++------------------+
+| persons          |
+| persons_copy     |
++------------------+
+2 rows in set (0.00 sec)
+
+
+mysql> SOURCE /Users/arifagustyawan/Documents/pwd/d7/mysqlsampledatabase.sql;
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| classicmodels      |
+| information_schema |
+| mysql              |
+| performance_schema |
+| seller             |
+| shop               |
+| sys                |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> USE seller;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+(base) arifagustyawan@nomadicts-mac-mini d7 % mysqldump -u root -p seller > seller2.sql
+Enter password: 
+
+mysql> USE classicmodels;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> SHOW TABLES;
++-------------------------+
+| Tables_in_classicmodels |
++-------------------------+
+| customers               |
+| employees               |
+| offices                 |
+| orderdetails            |
+| orders                  |
+| payments                |
+| productlines            |
+| products                |
++-------------------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT * FROM offices;
++------------+---------------+------------------+--------------------------+--------------+------------+-----------+------------+-----------+
+| officeCode | city          | phone            | addressLine1             | addressLine2 | state      | country   | postalCode | territory |
++------------+---------------+------------------+--------------------------+--------------+------------+-----------+------------+-----------+
+| 1          | San Francisco | +1 650 219 4782  | 100 Market Street        | Suite 300    | CA         | USA       | 94080      | NA        |
+| 2          | Boston        | +1 215 837 0825  | 1550 Court Place         | Suite 102    | MA         | USA       | 02107      | NA        |
+| 3          | NYC           | +1 212 555 3000  | 523 East 53rd Street     | apt. 5A      | NY         | USA       | 10022      | NA        |
+| 4          | Paris         | +33 14 723 4404  | 43 Rue Jouffroy D'abbans | NULL         | NULL       | France    | 75017      | EMEA      |
+| 5          | Tokyo         | +81 33 224 5000  | 4-1 Kioicho              | NULL         | Chiyoda-Ku | Japan     | 102-8578   | Japan     |
+| 6          | Sydney        | +61 2 9264 2451  | 5-11 Wentworth Avenue    | Floor #2     | NULL       | Australia | NSW 2010   | APAC      |
+| 7          | London        | +44 20 7877 2041 | 25 Old Broad Street      | Level 7      | NULL       | UK        | EC2N 1HN   | EMEA      |
++------------+---------------+------------------+--------------------------+--------------+------------+-----------+------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT city, phone, addressLine1 FROM offices;
++---------------+------------------+--------------------------+
+| city          | phone            | addressLine1             |
++---------------+------------------+--------------------------+
+| San Francisco | +1 650 219 4782  | 100 Market Street        |
+| Boston        | +1 215 837 0825  | 1550 Court Place         |
+| NYC           | +1 212 555 3000  | 523 East 53rd Street     |
+| Paris         | +33 14 723 4404  | 43 Rue Jouffroy D'abbans |
+| Tokyo         | +81 33 224 5000  | 4-1 Kioicho              |
+| Sydney        | +61 2 9264 2451  | 5-11 Wentworth Avenue    |
+| London        | +44 20 7877 2041 | 25 Old Broad Street      |
++---------------+------------------+--------------------------+
+7 rows in set (0.00 sec)
+
+mysql> show tables;
++-------------------------+
+| Tables_in_classicmodels |
++-------------------------+
+| customers               |
+| employees               |
+| offices                 |
+| orderdetails            |
+| orders                  |
+| payments                |
+| productlines            |
+| products                |
++-------------------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT status FROM orders;
++------------+
+| status     |
++------------+
+| Shipped    |
+| Resolved   |
+| Cancelled  |
+| On Hold    |
+| Disputed   |
+| In Process |
++------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM offices LIMIT 5;
++------------+---------------+-----------------+--------------------------+--------------+------------+---------+------------+-----------+
+| officeCode | city          | phone           | addressLine1             | addressLine2 | state      | country | postalCode | territory |
++------------+---------------+-----------------+--------------------------+--------------+------------+---------+------------+-----------+
+| 1          | San Francisco | +1 650 219 4782 | 100 Market Street        | Suite 300    | CA         | USA     | 94080      | NA        |
+| 2          | Boston        | +1 215 837 0825 | 1550 Court Place         | Suite 102    | MA         | USA     | 02107      | NA        |
+| 3          | NYC           | +1 212 555 3000 | 523 East 53rd Street     | apt. 5A      | NY         | USA     | 10022      | NA        |
+| 4          | Paris         | +33 14 723 4404 | 43 Rue Jouffroy D'abbans | NULL         | NULL       | France  | 75017      | EMEA      |
+| 5          | Tokyo         | +81 33 224 5000 | 4-1 Kioicho              | NULL         | Chiyoda-Ku | Japan   | 102-8578   | Japan     |
++------------+---------------+-----------------+--------------------------+--------------+------------+---------+------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM orders LIMIT 10;
++-------------+------------+--------------+-------------+---------+------------------------------------------------------------------------+----------------+
+| orderNumber | orderDate  | requiredDate | shippedDate | status  | comments                                                               | customerNumber |
++-------------+------------+--------------+-------------+---------+------------------------------------------------------------------------+----------------+
+|       10100 | 2003-01-06 | 2003-01-13   | 2003-01-10  | Shipped | NULL                                                                   |            363 |
+|       10101 | 2003-01-09 | 2003-01-18   | 2003-01-11  | Shipped | Check on availability.                                                 |            128 |
+|       10102 | 2003-01-10 | 2003-01-18   | 2003-01-14  | Shipped | NULL                                                                   |            181 |
+|       10103 | 2003-01-29 | 2003-02-07   | 2003-02-02  | Shipped | NULL                                                                   |            121 |
+|       10104 | 2003-01-31 | 2003-02-09   | 2003-02-01  | Shipped | NULL                                                                   |            141 |
+|       10105 | 2003-02-11 | 2003-02-21   | 2003-02-12  | Shipped | NULL                                                                   |            145 |
+|       10106 | 2003-02-17 | 2003-02-24   | 2003-02-21  | Shipped | NULL                                                                   |            278 |
+|       10107 | 2003-02-24 | 2003-03-03   | 2003-02-26  | Shipped | Difficult to negotiate with customer. We need more marketing materials |            131 |
+|       10108 | 2003-03-03 | 2003-03-12   | 2003-03-08  | Shipped | NULL                                                                   |            385 |
+|       10109 | 2003-03-10 | 2003-03-19   | 2003-03-11  | Shipped | Customer requested that FedEx Ground is used for this shipping         |            486 |
++-------------+------------+--------------+-------------+---------+------------------------------------------------------------------------+----------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT status FROM orders LIMIT 3;
++-----------+
+| status    |
++-----------+
+| Shipped   |
+| Resolved  |
+| Cancelled |
++-----------+
+3 rows in set (0.00 sec)
+
+mysql> DESC orderdetails;
++-----------------+---------------+------+-----+---------+-------+
+| Field           | Type          | Null | Key | Default | Extra |
++-----------------+---------------+------+-----+---------+-------+
+| orderNumber     | int           | NO   | PRI | NULL    |       |
+| productCode     | varchar(15)   | NO   | PRI | NULL    |       |
+| quantityOrdered | int           | NO   |     | NULL    |       |
+| priceEach       | decimal(10,2) | NO   |     | NULL    |       |
+| orderLineNumber | smallint      | NO   |     | NULL    |       |
++-----------------+---------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT COUNT(*) FROM orderdetails;
++----------+
+| COUNT(*) |
++----------+
+|     2996 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> SELECT COUNT(orderNumber) FROM orderdetails;
++--------------------+
+| COUNT(orderNumber) |
++--------------------+
+|               2996 |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT COUNT(DISTINCT status) FROM orders;
++------------------------+
+| COUNT(DISTINCT status) |
++------------------------+
+|                      6 |
++------------------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT AVG(quantityOrdered) FROM orderdetails;
++----------------------+
+| AVG(quantityOrdered) |
++----------------------+
+|              35.2190 |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SUM(quantityOrdered) FROM orderdetails;
++----------------------+
+| SUM(quantityOrdered) |
++----------------------+
+|               105516 |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql> USE seller;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++------------------+
+| Tables_in_seller |
++------------------+
+| persons          |
+| persons_copy     |
+| persons_copy2    |
++------------------+
+3 rows in set (0.00 sec)
+
+mysql> desc persons;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| person_id | int          | YES  |     | NULL    |       |
+| name      | varchar(255) | YES  |     | NULL    |       |
+| address   | varchar(255) | YES  |     | NULL    |       |
+| city      | varchar(255) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> INSERT INTO persons (person_id, name, address, city)
+    -> VALUES (1, "Arif A.", "Jl. Palmerah", "DKI");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM persons;
++-----------+---------+--------------+------+
+| person_id | name    | address      | city |
++-----------+---------+--------------+------+
+|         1 | Arif A. | Jl. Palmerah | DKI  |
++-----------+---------+--------------+------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO persons VALUES (2, "Budi", "Jl. Kebayoran Lama", "DKI")
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT* FROM persons;
++-----------+---------+--------------------+------+
+| person_id | name    | address            | city |
++-----------+---------+--------------------+------+
+|         1 | Arif A. | Jl. Palmerah       | DKI  |
+|         2 | Budi    | Jl. Kebayoran Lama | DKI  |
++-----------+---------+--------------------+------+
+2 rows in set (0.00 sec)
+
+mysql> USE classicmodels;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> SHOW TABLES;
++-------------------------+
+| Tables_in_classicmodels |
++-------------------------+
+| customers               |
+| employees               |
+| offices                 |
+| orderdetails            |
+| orders                  |
+| payments                |
+| productlines            |
+| products                |
++-------------------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT * FROM orderdetails WHERE quantityOrdered>30 LIMIT 10;
++-------------+-------------+-----------------+-----------+-----------------+
+| orderNumber | productCode | quantityOrdered | priceEach | orderLineNumber |
++-------------+-------------+-----------------+-----------+-----------------+
+|       10100 | S18_2248    |              50 |     55.09 |               2 |
+|       10100 | S24_3969    |              49 |     35.29 |               1 |
+|       10101 | S24_1937    |              45 |     32.53 |               3 |
+|       10101 | S24_2022    |              46 |     44.35 |               2 |
+|       10102 | S18_1342    |              39 |     95.55 |               2 |
+|       10102 | S18_1367    |              41 |     43.13 |               1 |
+|       10103 | S10_4962    |              42 |    119.67 |               4 |
+|       10103 | S18_1097    |              35 |     94.50 |              10 |
+|       10103 | S18_2957    |              35 |     61.84 |              14 |
+|       10103 | S18_3320    |              46 |     86.31 |              16 |
++-------------+-------------+-----------------+-----------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM orderdetails WHERE quantityOrdered=30 LIMIT 10;
++-------------+-------------+-----------------+-----------+-----------------+
+| orderNumber | productCode | quantityOrdered | priceEach | orderLineNumber |
++-------------+-------------+-----------------+-----------+-----------------+
+|       10100 | S18_1749    |              30 |    136.00 |               3 |
+|       10106 | S700_2047   |              30 |     85.09 |              16 |
+|       10107 | S10_1678    |              30 |     81.35 |               2 |
+|       10108 | S24_3371    |              30 |     60.01 |               5 |
+|       10126 | S18_3136    |              30 |     93.20 |              13 |
+|       10129 | S700_3962   |              30 |     94.34 |               7 |
+|       10134 | S18_2625    |              30 |     51.48 |               6 |
+|       10135 | S32_4485    |              30 |     91.85 |              17 |
+|       10138 | S24_2887    |              30 |     96.30 |               9 |
+|       10139 | S18_3320    |              30 |     81.35 |               5 |
++-------------+-------------+-----------------+-----------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT SUM(quantityOrdered) FROM orderdetails WHERE quantityOrdered>30;
++----------------------+
+| SUM(quantityOrdered) |
++----------------------+
+|                79328 |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql>  SELECT SUM(quantityOrdered) FROM orderdetails;
++----------------------+
+| SUM(quantityOrdered) |
++----------------------+
+|               105516 |
++----------------------+
+1 row in set (0.00 sec)
+
+
+mysql> SELECT * FROM orders WHERE comments LIKE 'C%' LIMIT 10;
++-------------+------------+--------------+-------------+-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| orderNumber | orderDate  | requiredDate | shippedDate | status    | comments                                                                                                                                                                                      | customerNumber |
++-------------+------------+--------------+-------------+-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+|       10101 | 2003-01-09 | 2003-01-18   | 2003-01-11  | Shipped   | Check on availability.                                                                                                                                                                        |            128 |
+|       10109 | 2003-03-10 | 2003-03-19   | 2003-03-11  | Shipped   | Customer requested that FedEx Ground is used for this shipping                                                                                                                                |            486 |
+|       10112 | 2003-03-24 | 2003-04-03   | 2003-03-29  | Shipped   | Customer requested that ad materials (such as posters, pamphlets) be included in the shippment                                                                                                |            144 |
+|       10118 | 2003-04-21 | 2003-04-29   | 2003-04-26  | Shipped   | Customer has worked with some of our vendors in the past and is aware of their MSRP                                                                                                           |            216 |
+|       10124 | 2003-05-21 | 2003-05-29   | 2003-05-25  | Shipped   | Customer very concerned about the exact color of the models. There is high risk that he may dispute the order because there is a slight color mismatch                                        |            112 |
+|       10127 | 2003-06-03 | 2003-06-09   | 2003-06-06  | Shipped   | Customer requested special shippment. The instructions were passed along to the warehouse                                                                                                     |            151 |
+|       10136 | 2003-07-04 | 2003-07-14   | 2003-07-06  | Shipped   | Customer is interested in buying more Ferrari models                                                                                                                                          |            242 |
+|       10143 | 2003-08-10 | 2003-08-18   | 2003-08-12  | Shipped   | Can we deliver the new Ford Mustang models by end-of-quarter?                                                                                                                                 |            320 |
+|       10167 | 2003-10-23 | 2003-10-30   | NULL        | Cancelled | Customer called to cancel. The warehouse was notified in time and the order didn't ship. They have a new VP of Sales and are shifting their sales model. Our VP of Sales should contact them. |            448 |
+|       10173 | 2003-11-05 | 2003-11-15   | 2003-11-09  | Shipped   | Cautious optimism. We have happy customers here, if we can keep them well stocked.  I need all the information I can get on the planned shippments of Porches                                 |            278 |
++-------------+------------+--------------+-------------+-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM orders WHERE comments LIKE '%C' LIMIT 10;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM orders WHERE comments LIKE '%S' LIMIT 10;
++-------------+------------+--------------+-------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| orderNumber | orderDate  | requiredDate | shippedDate | status  | comments                                                                                                                                                      | customerNumber |
++-------------+------------+--------------+-------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+|       10107 | 2003-02-24 | 2003-03-03   | 2003-02-26  | Shipped | Difficult to negotiate with customer. We need more marketing materials                                                                                        |            131 |
+|       10136 | 2003-07-04 | 2003-07-14   | 2003-07-06  | Shipped | Customer is interested in buying more Ferrari models                                                                                                          |            242 |
+|       10173 | 2003-11-05 | 2003-11-15   | 2003-11-09  | Shipped | Cautious optimism. We have happy customers here, if we can keep them well stocked.  I need all the information I can get on the planned shippments of Porches |            278 |
+|       10186 | 2003-11-14 | 2003-11-20   | 2003-11-18  | Shipped | They want to reevaluate their terms agreement with the VP of Sales                                                                                            |            489 |
+|       10213 | 2004-01-22 | 2004-01-28   | 2004-01-27  | Shipped | Difficult to negotiate with customer. We need more marketing materials                                                                                        |            489 |
+|       10242 | 2004-04-20 | 2004-04-28   | 2004-04-25  | Shipped | Customer is interested in buying more Ferrari models                                                                                                          |            456 |
+|       10279 | 2004-08-09 | 2004-08-19   | 2004-08-15  | Shipped | Cautious optimism. We have happy customers here, if we can keep them well stocked.  I need all the information I can get on the planned shippments of Porches |            141 |
+|       10311 | 2004-10-16 | 2004-10-23   | 2004-10-20  | Shipped | Difficult to negotiate with customer. We need more marketing materials                                                                                        |            141 |
+|       10340 | 2004-11-24 | 2004-12-01   | 2004-11-25  | Shipped | Customer is interested in buying more Ferrari models                                                                                                          |            216 |
+|       10377 | 2005-02-09 | 2005-02-21   | 2005-02-12  | Shipped | Cautious optimism. We have happy customers here, if we can keep them well stocked.  I need all the information I can get on the planned shippments of Porches |            186 |
++-------------+------------+--------------+-------------+---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+10 rows in set (0.01 sec)
+
+mysql> SELECT * FROM orders WHERE comments LIKE '%difficult%' LIMIT 10;
++-------------+------------+--------------+-------------+---------+------------------------------------------------------------------------+----------------+
+| orderNumber | orderDate  | requiredDate | shippedDate | status  | comments                                                               | customerNumber |
++-------------+------------+--------------+-------------+---------+------------------------------------------------------------------------+----------------+
+|       10107 | 2003-02-24 | 2003-03-03   | 2003-02-26  | Shipped | Difficult to negotiate with customer. We need more marketing materials |            131 |
+|       10213 | 2004-01-22 | 2004-01-28   | 2004-01-27  | Shipped | Difficult to negotiate with customer. We need more marketing materials |            489 |
+|       10311 | 2004-10-16 | 2004-10-23   | 2004-10-20  | Shipped | Difficult to negotiate with customer. We need more marketing materials |            141 |
++-------------+------------+--------------+-------------+---------+------------------------------------------------------------------------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM orders WHERE comments LIKE '%Cautious%' LIMIT 10;
++-------------+------------+--------------+-------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| orderNumber | orderDate  | requiredDate | shippedDate | status    | comments                                                                                                                                                                                    | customerNumber |
++-------------+------------+--------------+-------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+|       10173 | 2003-11-05 | 2003-11-15   | 2003-11-09  | Shipped   | Cautious optimism. We have happy customers here, if we can keep them well stocked.  I need all the information I can get on the planned shippments of Porches                               |            278 |
+|       10179 | 2003-11-11 | 2003-11-17   | 2003-11-13  | Cancelled | Customer cancelled due to urgent budgeting issues. Must be cautious when dealing with them in the future. Since order shipped already we must discuss who would cover the shipping charges. |            496 |
+|       10279 | 2004-08-09 | 2004-08-19   | 2004-08-15  | Shipped   | Cautious optimism. We have happy customers here, if we can keep them well stocked.  I need all the information I can get on the planned shippments of Porches                               |            141 |
+|       10377 | 2005-02-09 | 2005-02-21   | 2005-02-12  | Shipped   | Cautious optimism. We have happy customers here, if we can keep them well stocked.  I need all the information I can get on the planned shippments of Porches                               |            186 |
++-------------+------------+--------------+-------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM orderdetails WHERE quantityOrdered>30 AND priceEach <=50 limit 5;
++-------------+-------------+-----------------+-----------+-----------------+
+| orderNumber | productCode | quantityOrdered | priceEach | orderLineNumber |
++-------------+-------------+-----------------+-----------+-----------------+
+|       10100 | S24_3969    |              49 |     35.29 |               1 |
+|       10101 | S24_1937    |              45 |     32.53 |               3 |
+|       10101 | S24_2022    |              46 |     44.35 |               2 |
+|       10102 | S18_1367    |              41 |     43.13 |               1 |
+|       10103 | S18_4668    |              41 |     40.75 |               9 |
++-------------+-------------+-----------------+-----------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM orderdetails WHERE quantityOrdered>30 OR priceEach <=50 limit 5;
++-------------+-------------+-----------------+-----------+-----------------+
+| orderNumber | productCode | quantityOrdered | priceEach | orderLineNumber |
++-------------+-------------+-----------------+-----------+-----------------+
+|       10100 | S18_2248    |              50 |     55.09 |               2 |
+|       10100 | S24_3969    |              49 |     35.29 |               1 |
+|       10101 | S24_1937    |              45 |     32.53 |               3 |
+|       10101 | S24_2022    |              46 |     44.35 |               2 |
+|       10102 | S18_1342    |              39 |     95.55 |               2 |
++-------------+-------------+-----------------+-----------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> USE seller;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> SELECT * FROM persons;
++-----------+---------+--------------------+------+
+| person_id | name    | address            | city |
++-----------+---------+--------------------+------+
+|         1 | Arif A. | Jl. Palmerah       | DKI  |
+|         2 | Budi    | Jl. Kebayoran Lama | DKI  |
++-----------+---------+--------------------+------+
+2 rows in set (0.00 sec)
+
+mysql> UPDATE persons SET name="Arif Agustyawan" WHERE person_id=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM persons;
++-----------+-----------------+--------------------+------+
+| person_id | name            | address            | city |
++-----------+-----------------+--------------------+------+
+|         1 | Arif Agustyawan | Jl. Palmerah       | DKI  |
+|         2 | Budi            | Jl. Kebayoran Lama | DKI  |
++-----------+-----------------+--------------------+------+
+2 rows in set (0.00 sec)
+
+mysql> UPDATE persons SET address="Pondok Ranji", city="Tangerang Selatan" WHERE person_id=2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM persons;
++-----------+-----------------+--------------+-------------------+
+| person_id | name            | address      | city              |
++-----------+-----------------+--------------+-------------------+
+|         1 | Arif Agustyawan | Jl. Palmerah | DKI               |
+|         2 | Budi            | Pondok Ranji | Tangerang Selatan |
++-----------+-----------------+--------------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> UPDATE persons SET address="Pondok Kacang";
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM persons;
++-----------+-----------------+---------------+-------------------+
+| person_id | name            | address       | city              |
++-----------+-----------------+---------------+-------------------+
+|         1 | Arif Agustyawan | Pondok Kacang | DKI               |
+|         2 | Budi            | Pondok Kacang | Tangerang Selatan |
++-----------+-----------------+---------------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> DELETE FROM persons WHERE person_id=1;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM persons;
++-----------+------+---------------+-------------------+
+| person_id | name | address       | city              |
++-----------+------+---------------+-------------------+
+|         2 | Budi | Pondok Kacang | Tangerang Selatan |
++-----------+------+---------------+-------------------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO persons VALUES(3, "Ica", "Slipi", "DKI");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM persons;
++-----------+------+---------------+-------------------+
+| person_id | name | address       | city              |
++-----------+------+---------------+-------------------+
+|         2 | Budi | Pondok Kacang | Tangerang Selatan |
+|         3 | Ica  | Slipi         | DKI               |
++-----------+------+---------------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> DELETE FROM persons;
+Query OK, 2 rows affected (0.00 sec)
+
+mysql> SELECT * FROM persons;
+Empty set (0.00 sec)
+
+mysql> USE classicmodels;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> SHOW TABLES;
++-------------------------+
+| Tables_in_classicmodels |
++-------------------------+
+| customers               |
+| employees               |
+| offices                 |
+| orderdetails            |
+| orders                  |
+| payments                |
+| productlines            |
+| products                |
++-------------------------+
+8 rows in set (0.00 sec)
