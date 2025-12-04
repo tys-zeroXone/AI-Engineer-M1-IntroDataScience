@@ -2,6 +2,6 @@
 DB_CONFIG = {
     "host": "localhost",
     "user": "root",
-    "password": "Sianipar1989!",
+    "password": "password", # Replace with your actual password
     "database": "travel_agency_db",
 }
